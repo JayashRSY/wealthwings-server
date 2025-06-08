@@ -11,6 +11,8 @@ import connectDB from './utils/mongo.ts';
 import authRoutes from './routes/auth.route.ts'
 import userRoutes from './routes/user.route.ts'
 import cardRoutes from './routes/card.route.ts'
+import expenseRoutes from './routes/expense.route.ts'
+import incomeRoutes from './routes/income.route.ts'
 import errorMiddleware from './middlewares/error.middleware.ts';
 import loginLimiter from './middlewares/limiter.middleware.ts';
 
@@ -51,8 +53,10 @@ app.use(`${apiVersion}/health`, async (req, res, next) => {
     res.status(200).send({ message: "Server is up and running" });
 });
 app.use(`${apiVersion}/auth`, authRoutes);
-app.use(`${apiVersion}/user`, userRoutes);
-app.use(`${apiVersion}/card`, cardRoutes);
+app.use(`${apiVersion}/users`, userRoutes);
+app.use(`${apiVersion}/cards`, cardRoutes);
+app.use(`${apiVersion}/expenses`, expenseRoutes);
+app.use(`${apiVersion}/incomes`, incomeRoutes);
 
 // Error Handling Middleware
 app.use(errorMiddleware)

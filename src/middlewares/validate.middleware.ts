@@ -1,36 +1,35 @@
-import Joi from 'joi';
-import ApiError from '../utils/ApiError.ts';
-import httpStatus from 'http-status';
 import { Request, Response, NextFunction } from 'express';
-import mongoose from 'mongoose';
+import Joi from 'joi';
+import { pick } from 'lodash';
+import ApiError from '../utils/ApiError';
+import httpStatus from 'http-status';
 
-// Add a custom validator for MongoDB ObjectId
-const customJoi = Joi.extend((joi) => {
-  return {
-    type: 'objectId',
-    base: joi.string(),
-    messages: {
-      'objectId.invalid': '"{{#label}}" is not a valid MongoDB ObjectId',
-    },
-    validate(value, helpers) {
-      if (!mongoose.Types.ObjectId.isValid(value)) {
-        return { value, errors: helpers.error('objectId.invalid') };
-      }
-      return { value };
-    },
-  };
-});
+type SchemaType = {
+  params?: Joi.Schema;
+  query?: Joi.Schema;
+  body?: Joi.Schema;
+};
 
-const validate = (schema: Joi.ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
-  const validSchema = schema;
-  const object = { ...req.body, ...req.params, ...req.query };
-  const { error } = Joi.compile(validSchema)
+/**
+ * Middleware to validate request data against a Joi schema
+ * @param schema - Joi schema or object containing Joi schemas for params, query, and body
+ * @returns Express middleware function
+ */
+const validate = (schema: SchemaType | Joi.Schema) => (req: Request, res: Response, next: NextFunction) => {
+  const validSchema = Joi.isSchema(schema) ? { body: schema } : schema;
+  const object = pick(req, Object.keys(validSchema));
+
+  const { value, error } = Joi.compile(validSchema)
     .prefs({ errors: { label: 'key' }, abortEarly: false })
     .validate(object);
+
   if (error) {
     const errorMessage = error.details.map((details) => details.message).join(', ');
     return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
   }
+
+  Object.assign(req, value);
   return next();
 };
+
 export default validate;

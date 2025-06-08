@@ -11,16 +11,16 @@ import validate from '../middlewares/validate.middleware.ts';
 import { createUserValidation, updateUserValidation, getUserValidation, deleteUserValidation } from '../validations/user.validation.ts';
 
 const router = express.Router();
+router.use(authenticate);
 
 // router.post('/', validate(createUserValidation), createUser);
-router.get('/', authenticate, getUsers);
+router.get('/', getUsers);
 router.get(
   '/:id',
   validate(getUserValidation),
-  authenticate,
   getUser
 );
-router.put('/:id', validate(updateUserValidation), authenticate, updateUser);
-router.delete('/:id', validate(deleteUserValidation), authenticate, deleteUser);
+router.put('/:id', validate(updateUserValidation), updateUser);
+router.delete('/:id', validate(deleteUserValidation), deleteUser);
 
 export default router;
