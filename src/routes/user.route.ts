@@ -5,10 +5,10 @@ import {
   getUsers,
   updateUser,
   deleteUser,
-} from '../controllers/user.controller.ts';
-import { authenticate } from '../middlewares/auth.middleware.ts'; 
-import validate from '../middlewares/validate.middleware.ts';
-import { createUserValidation, updateUserValidation, getUserValidation, deleteUserValidation } from '../validations/user.validation.ts';
+} from '../controllers/user.controller';
+import { authenticate } from '../middlewares/auth.middleware'; 
+import validate from '../middlewares/validate.middleware';
+import { createUserValidation, updateUserValidation, getUserValidation, deleteUserValidation } from '../validations/user.validation';
 
 const router = express.Router();
 router.use(authenticate);

@@ -7,14 +7,14 @@ import {
   google, 
   forgotPassword, 
   resetPassword 
-} from '../controllers/auth.controller.ts';
-import validate from '../middlewares/validate.middleware.ts';
+} from '../controllers/auth.controller';
+import validate from '../middlewares/validate.middleware';
 import { 
   loginValidation, 
   registerValidation, 
   forgotPasswordValidation, 
   resetPasswordValidation 
-} from '../validations/auth.validation.ts';
+} from '../validations/auth.validation';
 
 const router = express.Router();
 

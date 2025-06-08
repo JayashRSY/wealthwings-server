@@ -6,15 +6,15 @@ import helmet from "helmet";
 import dotenv from 'dotenv';
 import mongoSanitize from 'express-mongo-sanitize';
 import compression from 'compression';
-import { config } from './configs/config.ts';
-import connectDB from './utils/mongo.ts';
-import authRoutes from './routes/auth.route.ts'
-import userRoutes from './routes/user.route.ts'
-import cardRoutes from './routes/card.route.ts'
-import expenseRoutes from './routes/expense.route.ts'
-import incomeRoutes from './routes/income.route.ts'
-import errorMiddleware from './middlewares/error.middleware.ts';
-import loginLimiter from './middlewares/limiter.middleware.ts';
+import { config } from './configs/config';
+import connectDB from './utils/mongo';
+import authRoutes from './routes/auth.route'
+import userRoutes from './routes/user.route'
+import cardRoutes from './routes/card.route'
+import expenseRoutes from './routes/expense.route'
+import incomeRoutes from './routes/income.route'
+import errorMiddleware from './middlewares/error.middleware';
+import loginLimiter from './middlewares/limiter.middleware';
 
 dotenv.config({ path: './.env' });
 const { PORT } = process.env;

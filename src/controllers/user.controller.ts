@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import UserModel from "../models/user.model.ts";
+import UserModel from "../models/user.model";
 import httpStatus from 'http-status';
-import catchAsync from '../utils/catchAsync.ts';
+import catchAsync from '../utils/catchAsync';
 
 export const getUsers = catchAsync(async (req: Request, res: Response) => {
   if (req?.user?.role !== "admin") {

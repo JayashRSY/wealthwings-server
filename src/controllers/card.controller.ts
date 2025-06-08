@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { getCardRecommendation, extractStatementDataFromPdf } from '../services/ai.service'; // Updated import
-import catchAsync from '../utils/catchAsync.ts';
-import CardStatementModel from '../models/card.model.ts';
+import catchAsync from '../utils/catchAsync';
+import CardStatementModel from '../models/card.model';
 
 export const recommendCard = catchAsync(async (req: Request, res: Response) => {
   const {

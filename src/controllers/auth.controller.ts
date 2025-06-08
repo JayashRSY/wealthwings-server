@@ -3,12 +3,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import httpStatus from "http-status";
 import { OAuth2Client } from "google-auth-library";
-import UserModel from "../models/user.model.ts";
-import catchAsync from "../utils/catchAsync.ts";
-import { generateAuthTokens } from "../services/token.service.ts";
-import { generateResetToken, hashResetToken } from '../utils/passwordReset.ts';
-import { config } from '../configs/config.ts';
-import { sendSimpleEmail } from '../utils/email.ts';
+import UserModel from "../models/user.model";
+import catchAsync from "../utils/catchAsync";
+import { generateAuthTokens } from "../services/token.service";
+import { generateResetToken, hashResetToken } from '../utils/passwordReset';
+import { config } from '../configs/config';
+import { sendSimpleEmail } from '../utils/email';
 
 export const register = catchAsync(async (
   req: Request,

@@ -1,6 +1,6 @@
-import logger from '../utils/logger.ts';
+import logger from '../utils/logger';
 import { NextFunction, Request, Response } from "express";
-import ApiError from '../utils/ApiError.ts';
+import ApiError from '../utils/ApiError';
 
 const errorMiddleware = (err: Error, req: Request, res: Response, next: NextFunction) => {
     console.log("🚀 ~ errorMiddleware ~ err:", err)

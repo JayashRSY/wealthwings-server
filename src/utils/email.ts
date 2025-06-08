@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { config } from '../configs/config.ts';
+import { config } from '../configs/config';
 
 /**
  * Interface for email options

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { config } from "../configs/config.ts";
-import ApiError from "../utils/ApiError.ts";
+import { config } from "../configs/config";
+import ApiError from "../utils/ApiError";
 import httpStatus from "http-status";
 import { NextFunction, Request, Response } from "express";
 import { UserPayload } from "../types/custom";
