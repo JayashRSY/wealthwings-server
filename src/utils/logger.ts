@@ -1,48 +1,46 @@
 import winston from 'winston';
-import path from 'path';
-import * as fs from 'fs';
+import { config } from '../configs/config';
 
-// Ensure the 'logs' directory exists
-const logDir = path.join('logs');
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir);
-}
+const { format, createLogger, transports } = winston;
+const { combine, timestamp, printf, colorize } = format;
 
-const logFormat = winston.format.combine(
-  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-  winston.format.errors({ stack: true }), // Include stack traces for errors
-  winston.format.splat(), // Enable string interpolation with %s
-  winston.format.json(), // Log in JSON format
-);
-
-const logger = winston.createLogger({
-  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-  format: logFormat,
-  transports: [
-    // Console transport with colorized and simple format
-    new winston.transports.Console({
-      level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple(),
-      ),
-    }),
-    // File transport for errors only
-    new winston.transports.File({
-      filename: path.join(logDir, 'error.log'),
-      level: 'error',
-      maxsize: 5242880, // 5MB
-      maxFiles: 5,
-      tailable: true,
-    }),
-    // File transport for combined logs
-    new winston.transports.File({
-      filename: path.join(logDir, 'combined.log'),
-      maxsize: 5242880, // 5MB
-      maxFiles: 5,
-      tailable: true,
-    }),
-  ],
+// Custom format for logs
+const logFormat = printf(({ level, message, timestamp }) => {
+  return `${timestamp} ${level}: ${message}`;
 });
+
+// Create logger instance
+const logger = createLogger({
+  level: config.app.nodeEnv === 'production' ? 'info' : 'debug',
+  format: combine(
+    timestamp(),
+    logFormat
+  ),
+  transports: [
+    // Console transport for all environments
+    new transports.Console({
+      format: combine(
+        colorize(),
+        timestamp(),
+        logFormat
+      )
+    })
+  ]
+});
+
+// Only add file transport in development environment
+if (config.app.nodeEnv !== 'production') {
+  try {
+    logger.add(new transports.File({ 
+      filename: 'logs/error.log', 
+      level: 'error' 
+    }));
+    logger.add(new transports.File({ 
+      filename: 'logs/combined.log' 
+    }));
+  } catch (error) {
+    logger.warn('Could not create log files. Using console transport only.');
+  }
+}
 
 export default logger;
