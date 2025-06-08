@@ -42,6 +42,7 @@ export interface CorsOptions {
   maxAge: number;
   credentials: boolean;
   optionsSuccessStatus: number;
+  preflightContinue: boolean;
 }
 
 export interface EmailConfig {
@@ -101,7 +102,12 @@ export const config: AppFullConfig = {
   },
   corsOptions: {
     origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) {
+        return callback(null, true);
+      }
+      
+      if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
@@ -113,11 +119,17 @@ export const config: AppFullConfig = {
       "Authorization",
       "X-Requested-With",
       "Accept",
+      "Origin",
+      "Access-Control-Allow-Origin",
+      "Access-Control-Allow-Headers",
+      "Access-Control-Allow-Methods",
+      "Access-Control-Allow-Credentials"
     ],
     exposedHeaders: ["Content-Range", "X-Content-Range"],
-    maxAge: 600, // Cache preflight requests for 10 minutes
+    maxAge: 86400, // Cache preflight requests for 24 hours
     credentials: true,
-    optionsSuccessStatus: 200,
+    optionsSuccessStatus: 204,
+    preflightContinue: false
   },
   email: {
     user: process.env.BREVO_USER,

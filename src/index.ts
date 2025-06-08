@@ -28,8 +28,10 @@ connectDB()
 app.use(express.json());
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
+
 // enable cors
-app.use(cors(config.corsOptions as CorsOptions))
+app.use(cors(config.corsOptions as CorsOptions));
+
 app.use(cookieParser());
 // set security HTTP headers
 app.use(helmet());
