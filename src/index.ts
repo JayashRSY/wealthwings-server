@@ -14,6 +14,10 @@ import cardRoutes from './routes/card.route'
 import expenseRoutes from './routes/expense.route'
 import incomeRoutes from './routes/income.route'
 import mutualFundRoutes from './routes/mutualFund.route'
+import blogRoutes from './routes/blog.route'
+import commentRoutes from './routes/comment.route'
+import likeRoutes from './routes/like.route'
+
 import errorMiddleware from './middlewares/error.middleware';
 import loginLimiter from './middlewares/limiter.middleware';
 
@@ -61,6 +65,9 @@ app.use(`${apiVersion}/cards`, cardRoutes);
 app.use(`${apiVersion}/expenses`, expenseRoutes);
 app.use(`${apiVersion}/incomes`, incomeRoutes);
 app.use(`${apiVersion}/mutual-funds`, mutualFundRoutes);
+app.use(`${apiVersion}/blogs`, blogRoutes);
+app.use(`${apiVersion}/comments`, commentRoutes);
+app.use(`${apiVersion}/likes`, likeRoutes);
 
 // Error Handling Middleware
 app.use(errorMiddleware)
