@@ -3,8 +3,9 @@ import { openAIChatCompletion } from "../configs/openai";
 import pdfParse from "pdf-parse";
 
 const aiAgent = async (prompt: string) => {
-  return await geminiChatCompletion(prompt);
-  // return await openAIChatCompletion(prompt)
+  // AI Agent Change
+  // return await geminiChatCompletion(prompt);
+  return await openAIChatCompletion(prompt)
 };
 export async function getCardRecommendation(
   amount: number,
