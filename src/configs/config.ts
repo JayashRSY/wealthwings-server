@@ -63,7 +63,7 @@ export interface AppFullConfig {
 export const allowedOrigins: string[] = process.env.ALLOWED_ORIGINS?.split(",") || [
   "http://localhost:3000",
   "http://localhost:4200",
-  "http://localhost:5173"
+  "http://localhost:5173",
 ];
 
 export const config: AppFullConfig = {
