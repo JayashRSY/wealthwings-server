@@ -60,7 +60,11 @@ export interface AppFullConfig {
   email: EmailConfig;
 }
 
-export const allowedOrigins: string[] = ["*"];
+export const allowedOrigins: string[] = process.env.ALLOWED_ORIGINS?.split(",") || [
+  "http://localhost:3000",
+  "http://localhost:4200",
+  "http://localhost:5173"
+];
 
 export const config: AppFullConfig = {
   app: {
@@ -98,11 +102,6 @@ export const config: AppFullConfig = {
   },
   corsOptions: {
     origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
-      // Allow all origins if wildcard is set
-      if (allowedOrigins.includes("*")) {
-        return callback(null, true);
-      }
-      
       // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) {
         return callback(null, true);
